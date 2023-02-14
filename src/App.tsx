@@ -1,38 +1,37 @@
-import * as React from "react"
+import { ChakraProvider, theme } from "@chakra-ui/react";
+import LoginForm from "./pages/LoginForm";
+import PostCard from "./pages/PostCard";
+import RootLayout from "./layouts/RootLayout";
+import Help from "./pages/help/Help";
 import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
+  RouterProvider,
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+import Faq from "./pages/help/Faq";
+import Contact from "./pages/help/Contact";
 
-export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
-          </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
-        </VStack>
-      </Grid>
-    </Box>
-  </ChakraProvider>
-)
+const App = () => {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<RootLayout />}>
+        <Route index element={<LoginForm />} />
+        <Route path="about" element={<PostCard />} />
+        <Route path="help" element={<Help />}>
+          <Route path="faq" element={<Faq />} />
+          <Route path="contact" element={<Contact />} />
+        </Route>
+      </Route>
+    )
+  );
+
+  return (
+    <ChakraProvider theme={theme}>
+      <h1>learn react</h1>
+      <RouterProvider router={router} />
+    </ChakraProvider>
+  );
+};
+
+export default App;
